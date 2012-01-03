@@ -1,4 +1,5 @@
 require 'torch'
 require 'lab'
+require 'libkex'
 
-torch.include('kktools','lushio.lua')
+torch.include('kex','lushio.lua')
