@@ -1,1 +1,9 @@
 some tools needed here and there
+
+Requirements
+* Torch7 (github.com/andresy/torch)
+
+Installation
+* Install Torch7 (refer to its own documentation).
+* clone kex into dev directory of Torch7.
+* Rebuild torch, it will include kex too.

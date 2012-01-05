@@ -3,11 +3,18 @@
 
 #define torch_(NAME) TH_CONCAT_3(torch_, Real, NAME)
 #define torch_string_(NAME) TH_CONCAT_STRING_3(torch., Real, NAME)
-#define kex_(NAME) TH_CONCAT_3(unsup_, Real, NAME)
+#define nn_(NAME) TH_CONCAT_3(nn_, Real, NAME)
+#define kex_(NAME) TH_CONCAT_3(kex_, Real, NAME)
 
 static const void* torch_FloatTensor_id = NULL;
 static const void* torch_DoubleTensor_id = NULL;
 static const void* torch_LongTensor_id = NULL;
+
+#include "generic/SpatialFullConvolution.c"
+#include "THGenerateFloatTypes.h"
+
+#include "generic/L1Cost.c"
+#include "THGenerateFloatTypes.h"
 
 #include "generic/util.c"
 #include "THGenerateFloatTypes.h"
@@ -24,6 +31,13 @@ DLL_EXPORT int luaopen_libkex(lua_State *L)
 
   kex_Floatutil_init(L);
   kex_Doubleutil_init(L);
+
+  nn_FloatSpatialFullConvolution_init(L);
+  nn_DoubleSpatialFullConvolution_init(L);
+
+  nn_FloatL1Cost_init(L);
+  nn_DoubleL1Cost_init(L);
+
   
   return 1;
 }
