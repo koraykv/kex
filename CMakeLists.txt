@@ -12,5 +12,6 @@ SET(luasrc init.lua
   )
 
 ADD_TORCH_PACKAGE(kex "${src}"  "${luasrc}" "Extra Tools")
+ADD_TORCH_DOK(dok kex "3rd Party" "Extensions from Koray" 111111.)
 
 TARGET_LINK_LIBRARIES(kex luaT TH)

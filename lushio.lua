@@ -4,7 +4,7 @@ require 'torch'
 lushio = {}
 lushio5 = {}
 
-function lushio.readBinaryLushMatrix(filename)
+function lushio.read(filename)
    -- Reads Lush binary formatted matrix and returns it.
    -- The matrix is stored in 'filename'.
    --
@@ -57,7 +57,7 @@ function lushio.readBinaryLushMatrix(filename)
    return x
 end
 
-function lushio5.readBinaryLushMatrix(filename)
+function lushio5.read(filename)
    -- Reads Lush binary formatted matrix and returns it.
    -- The matrix is stored in 'filename'.
    --
