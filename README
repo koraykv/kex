@@ -1,4 +1,6 @@
-some tools needed here and there
+Tools and extra classes needed for my other projects.
+Some of the classes here will make their ways into the main Torch
+branch if they turn out to be useful.
 
 Requirements
 * Torch7 (github.com/andresy/torch)
