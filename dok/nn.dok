@@ -1,0 +1,31 @@
+====== Additional Classes for NN Package ======
+{{anchor:kex.nn.dok}}
+
+These classes are useful for soem fo the projects that I do and might 
+be included in the full [[..:torch:index|Torch 7]] release at some point.
+
+==== nn.CriterionModule (criterion, target) ====
+{{anchor:nn.CriterionModule}}
+
+This criterion wraps a [[..:nn:index#nn.Criterions|Criterion]] with a fixed target.
+it is useful for cases where one wants to test a criterion using the 
+already available testing framework in [[..:nn:index#nn.dok|nn]] package or 
+when one wants to use one of the available [[..:nn:index#nn.Criterions|Criterions]]
+as a cost term with a single input.
+
+==== nn.L1Cost ====
+{{anchor:nn.L1Cost}}
+
+This criterion is an implementation of ''L1'' cost, which is sum of absolute values of 
+all elements.
+
+==== nn.WeightedMSECriterion(weighting) ====
+
+This criterion extends regular [[..:nn:index#nn.MSECriterion|nn.MSECriterion]] with 
+a weighting applied on the ''target''. The number of elements of the ''target'' tensor has to 
+be the same as the number of elements of the ''weighting''.
+
+==== nn.SpatialFullConvolution(nInputPlane, nOutputPlane, kW, kH, dW, dH) ====
+
+This class is very similar to [[..:nn:index#nn.SpatialConvolution|nn.SpatialConvolution]], but
+performs a full convolution of the input with the kernels, instead of valid.

@@ -1,0 +1,11 @@
+====== Lush Formatted Tensor I/O ======
+{{anchor:kex.lushio.dok}}
+
+This package provides utility functions for reading/writing lush formatted
+tensors.
+
+==== lushio.read(fname) ====
+{{anchor:lushio.read}}
+
+Reads a binary [[http://lush.sf.net|Lush]] formatted tensor from file
+fname and returns it.

@@ -1,0 +1,10 @@
+====== Kex (Extensions for 3rd Party Packages from Koray) ======
+{{anchor:kex.dok}}
+
+This package defines several extension functions and classes to 
+standard [[..:torch:index|Torch]] distribution.
+
+The components of this package are divided into following groups.
+  * [[http://lush.sf.net|Lush]] formatted [[lushio|tensor reading]]
+  * [[nn|Additional classes]] for [[..:nn:index|nn]] package.
+  
