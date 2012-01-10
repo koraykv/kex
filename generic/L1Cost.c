@@ -8,8 +8,7 @@ static int nn_(L1Cost_updateOutput)(lua_State *L)
   accreal sum;
 
   sum = 0;
-  TH_TENSOR_APPLY(real, input, 
-		  sum += fabs(*input_data););
+  TH_TENSOR_APPLY(real, input, sum += fabs(*input_data););
 
   lua_pushnumber(L, sum);
   lua_setfield(L, 1, "output");
@@ -25,8 +24,12 @@ static int nn_(L1Cost_updateGradInput)(lua_State *L)
 
   THTensor_(resizeAs)(gradInput, input);
   TH_TENSOR_APPLY2(real, gradInput, real, input,
-                   *gradInput_data = ( *input_data >= 0 ? 1 : -1););
-    
+                   if (*input_data > 0)
+                     *gradInput_data = 1;
+                   else if (*input_data < 0)
+                     *gradInput_data = -1;
+                   else
+                     *gradInput_data = 0;);
   return 1;
 }
 
