@@ -7,6 +7,7 @@ SET(luasrc init.lua
   SpatialFullConvolution.lua 
   WeightedMSECriterion.lua
   L1Cost.lua
+  Diag.lua
   stochasticrates.lua
   test/test.lua
   test/test_module.lua

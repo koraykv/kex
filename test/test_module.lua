@@ -45,8 +45,25 @@ function nntest.WeightedMSECriterion()
    mytester:asserteq(0, berr, torch.typename(module) .. ' - i/o backward err ')
 end
 
+function nntest.Diag()
+   local from = math.random(10,20)
+   local sz = math.random(100,500)
+   local module = nn.Diag(from)
+   local input = torch.Tensor(from,sz)
+
+   local err = jac.testJacobian(module,input)
+   mytester:assertlt(err, precision, 'error on state')
+
+   local err = jac.testJacobianParameters(module, input, module.weight, module.gradWeight)
+   mytester:assertlt(err , precision, 'error on weight ')
+   
+   local ferr, berr = jac.testIO(module, input)
+   mytester:asserteq(0, ferr, torch.typename(module) .. ' - i/o forward err ')
+   mytester:asserteq(0, berr, torch.typename(module) .. ' - i/o backward err ')
+end
+
 mytester:add(nntest)
 
-function unsup.module_test()
+function kex.module_test()
    mytester:run()
 end
