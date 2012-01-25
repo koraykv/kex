@@ -8,6 +8,10 @@ SET(luasrc init.lua
   WeightedMSECriterion.lua
   L1Cost.lua
   Diag.lua
+  SpatialMaxPyramid.lua
+  SpatialMaxPooling2.lua
+  Vectorize.lua
+  TanhShrink.lua
   stochasticrates.lua
   test/test.lua
   test/test_module.lua
