@@ -12,6 +12,7 @@ SET(luasrc init.lua
   SpatialMaxPooling2.lua
   Vectorize.lua
   TanhShrink.lua
+  Crop.lua
   stochasticrates.lua
   test/test.lua
   test/test_module.lua
