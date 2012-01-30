@@ -76,7 +76,6 @@ static int nn_(SpatialMaxPooling2_updateOutput)(lua_State *L)
         for(y = 0; y < kH; y++) {
           for(x = 0; x < kW; x++) {
             real val = *(ip + y*iwidth + x);
-	    //printf("    %d %d %g %g\n",y,x,val,maxval);
             if (val > maxval) {
               maxval = val;
               maxindex = tcntr;
@@ -84,6 +83,12 @@ static int nn_(SpatialMaxPooling2_updateOutput)(lua_State *L)
             tcntr++;
           }
         }
+	if (maxindex < 0 )
+	{
+	  printf("SpatialMaxPooling2, Index not found\n");
+	  maxindex = 0;
+	}
+	//THError("Maxindex=-1 in SpatialMaxPooling2");
 
         // set output to local max
         *op = maxval;
@@ -142,6 +147,7 @@ static int nn_(SpatialMaxPooling2_updateGradInput)(lua_State *L)
   real *gradOutput_data = THTensor_(data)(gradOutput);
   real *indices_data = THTensor_(data)(indices);
 
+  //printf("MAXPOOLING*****************\nkW=%d, kH=%d,dW=%d,dH=%d,iwidth=%d,iheight=%d",kW,kH,dW,dH,iwidth,iheight);
   // backprop
   long k;
   for (k = 0; k < input->size[0]; k++) {
@@ -159,6 +165,9 @@ static int nn_(SpatialMaxPooling2_updateGradInput)(lua_State *L)
  	long maxi = *(indy_p + i*owidth + j) - 1 + i*dH;
  	long maxj = *(indx_p + i*owidth + j) - 1 + j*dW;
 
+	//printf("k=%ld i=%d j=%d\n",k,i,j);
+	//printf("maxi=%ld maxj=%ld\n",maxi,maxj);
+	//printf("di=%ld dj=%d\n", maxi*iwidth + maxj, i*owidth + j);
         // update gradient
         *(gradInput_p + maxi*iwidth + maxj) += *(gradOutput_p + i*owidth + j);
       }

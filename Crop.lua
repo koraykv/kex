@@ -52,9 +52,10 @@ function Crop:updateOutput(input)
    local ow,oh = getOutputSize(self.module,iw,ih)
    if ow ~= math.floor(ow) or oh ~= math.floor(oh) then
       local iiw,iih = getInputSize(self.module,math.floor(ow),math.floor(oh))
-      self.output = input:narrow(3,math.floor((iw-iiw)/2)+1,iiw):narrow(2,math.floor((ih-iih)/2)+1,iih):clone()
+      local oo = input:narrow(3,math.floor((iw-iiw)/2)+1,iiw):narrow(2,math.floor((ih-iih)/2)+1,iih)
+      self.output:resizeAs(oo):copy(oo)
    else
-      self.output = input
+      self.output:resizeAs(input):copy(input)
    end
    return self.output
 end
