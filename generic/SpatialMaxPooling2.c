@@ -48,6 +48,7 @@ static int nn_(SpatialMaxPooling2_updateOutput)(lua_State *L)
   real *input_data = THTensor_(data)(input);
   real *output_data = THTensor_(data)(output);
   real *indices_data = THTensor_(data)(indices);
+  int haserror = 0;
 
   // compute max pooling for each input slice
   long k;
@@ -85,8 +86,9 @@ static int nn_(SpatialMaxPooling2_updateOutput)(lua_State *L)
         }
 	if (maxindex < 0 )
 	{
-	  printf("SpatialMaxPooling2, Index not found\n");
+	  //printf("SpatialMaxPooling2, Index not found\n");
 	  maxindex = 0;
+	  haserror = 1;
 	}
 	//THError("Maxindex=-1 in SpatialMaxPooling2");
 
@@ -103,6 +105,9 @@ static int nn_(SpatialMaxPooling2_updateOutput)(lua_State *L)
 
   // cleanup
   THTensor_(free)(input);
+
+  if (haserror)
+    THError("SpatialMaxPooling : maxindex = -1");
 
   return 1;
 }

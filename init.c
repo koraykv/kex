@@ -22,6 +22,9 @@ static const void* torch_LongTensor_id = NULL;
 #include "generic/util.c"
 #include "THGenerateFloatTypes.h"
 
+#include "generic/SqrtBias.c"
+#include "THGenerateFloatTypes.h"
+
 DLL_EXPORT int luaopen_libkex(lua_State *L)
 {
   torch_FloatTensor_id = luaT_checktypename2id(L, "torch.FloatTensor");
@@ -43,6 +46,10 @@ DLL_EXPORT int luaopen_libkex(lua_State *L)
 
   nn_FloatSpatialMaxPooling2_init(L);
   nn_DoubleSpatialMaxPooling2_init(L);
+
+  nn_FloatSqrtBias_init(L);
+  nn_DoubleSqrtBias_init(L);
+
   return 1;
 }
 

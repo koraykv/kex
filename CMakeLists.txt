@@ -13,6 +13,7 @@ SET(luasrc init.lua
   Vectorize.lua
   TanhShrink.lua
   Crop.lua
+  SqrtBias.lua
   stochasticrates.lua
   test/test.lua
   test/test_module.lua

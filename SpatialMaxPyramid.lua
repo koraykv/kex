@@ -14,3 +14,12 @@ function Spm:__init(nLevels)
       self:add(layer)
    end
 end
+
+function Spm:reset()
+end
+
+function Spm:zeroGradParameters()
+end
+
+function Spm:accGradParameters()
+end

@@ -5,13 +5,11 @@ function Vectorize:__init()
 end
 
 function Vectorize:updateOutput(input)
-   local output = input:contiguous()
-   self.output:set(output):resize(output:nElement())
+   self.output:resize(input:nElement()):copy(input)
    return self.output
 end
 
 function Vectorize:updateGradInput(input, gradOutput)
-   local gradInput = gradOutput:contiguous()
-   self.gradInput:set(gradInput):resize(input:size())
+   self.gradInput:resize(input:size()):copy(gradOutput)
    return self.gradInput
 end
