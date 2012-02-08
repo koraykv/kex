@@ -7,14 +7,14 @@ local precision = 1e-5
 local nntest = {}
 
 function nntest.SpatialFullConvolution()
-   local from = random.uniform(2,5)
-   local to = random.uniform(2,7)
-   local ki = random.uniform(2,7)
-   local kj = random.uniform(2,7)
-   local si = random.uniform(1,3)
-   local sj = random.uniform(1,3)
-   local ini = random.uniform(10,13)
-   local inj = random.uniform(10,13)
+   local from = torch.uniform(2,5)
+   local to = torch.uniform(2,7)
+   local ki = torch.uniform(2,7)
+   local kj = torch.uniform(2,7)
+   local si = torch.uniform(1,3)
+   local sj = torch.uniform(1,3)
+   local ini = torch.uniform(10,13)
+   local inj = torch.uniform(10,13)
    local module = nn.SpatialFullConvolution(from, to, ki, kj, si, sj)
    local input = torch.Tensor(from, inj, ini):zero()
    
@@ -30,10 +30,10 @@ function nntest.SpatialFullConvolution()
 end
 
 function nntest.WeightedMSECriterion()
-   local from  = random.uniform(100,200)
+   local from  = torch.uniform(100,200)
    local input = torch.Tensor(from):zero()
-   local target = lab.randn(from)
-   local weight = lab.randn(from)
+   local target = torch.randn(from)
+   local weight = torch.randn(from)
    local cri = nn.WeightedMSECriterion(weight)
    local module = nn.CriterionModule(cri,target)
 
@@ -46,8 +46,8 @@ function nntest.WeightedMSECriterion()
 end
 
 function nntest.Diag()
-   local from = random.uniform(10,20)
-   local sz = random.uniform(100,500)
+   local from = torch.uniform(10,20)
+   local sz = torch.uniform(100,500)
    local module = nn.Diag(from)
    local input = torch.Tensor(from,sz)
 
@@ -63,12 +63,12 @@ function nntest.Diag()
 end
 
 function nntest.TanhShrink()
-   local from = random.uniform(10,20)
-   local si = random.uniform(5,10)
-   local sj = random.uniform(5,10)
+   local from = torch.uniform(10,20)
+   local si = torch.uniform(5,10)
+   local sj = torch.uniform(5,10)
    
    local module = nn.TanhShrink()
-   local input = lab.rand(from,si,sj)
+   local input = torch.rand(from,si,sj)
 
    local err = jac.testJacobian(module,input)
    mytester:assertlt(err,precision,'error on state')
@@ -79,12 +79,12 @@ function nntest.TanhShrink()
 end
 
 function nntest.SPM()
-   local from = random.uniform(3,5)
-   local si = random.uniform(20,25)
-   local sj = random.uniform(20,25)
+   local from = torch.uniform(3,5)
+   local si = torch.uniform(20,25)
+   local sj = torch.uniform(20,25)
 
    local module = nn.SpatialMaxPyramid(3)
-   local input = lab.rand(from,si,sj)
+   local input = torch.rand(from,si,sj)
 
    local err = jac.testJacobian(module,input)
    mytester:assertlt(err,precision,'error on state')

@@ -29,7 +29,7 @@ function SpatialFullConvolution:reset(stdv)
       stdv = 1/math.sqrt(kW*kH*nInputPlane)
    end
    self.weight:apply(function()
-                        return random.uniform(-stdv, stdv)
+                        return torch.uniform(-stdv, stdv)
                      end)
 
 end
