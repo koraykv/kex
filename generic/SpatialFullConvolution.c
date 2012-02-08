@@ -16,7 +16,7 @@ static int nn_(SpatialFullConvolution_updateOutput)(lua_State *L)
 
   /* do convolutions */
   THTensor *tweight = THTensor_(newTranspose)(weight,0,1);
-  THLab_(conv2Dmv)(output, 0.0, 1.0, input, tweight, dH, dW, "fc");
+  THTensor_(conv2Dmv)(output, 0.0, 1.0, input, tweight, dH, dW, "F", "C");
   THTensor_(free)(tweight);
   
   return 1;
@@ -37,7 +37,7 @@ static int nn_(SpatialFullConvolution_updateGradInput)(lua_State *L)
   THArgCheck( nOutputPlane == gradOutput->size[0], 1, "Number of output features is not equal to nOutputPlane" );
 
   /* gradient to input */
-  THLab_(conv2Dmv)(gradInput, 0.0, 1.0, gradOutput, weight, dH, dW, "vx");
+  THTensor_(conv2Dmv)(gradInput, 0.0, 1.0, gradOutput, weight, dH, dW, "V", "X");
 
   return 1;
 }
@@ -57,7 +57,7 @@ static int nn_(SpatialFullConvolution_accGradParameters)(lua_State *L)
   THArgCheck( nOutputPlane == gradOutput->size[0], 1, "Number of output features is not equal to nOutputPlane" );
 
   /* gradient to kernels */
-  THLab_(conv2DRevger)(gradWeight, 1.0, scale, gradOutput, input, dH, dW);
+  THTensor_(conv2DRevger)(gradWeight, 1.0, scale, gradOutput, input, dH, dW);
   return 0;
 }
 
