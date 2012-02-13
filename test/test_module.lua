@@ -94,6 +94,32 @@ function nntest.SPM()
    mytester:asserteq(0, berr, torch.typename(module) .. ' - i/o backward err ')
 end
 
+function nntest.TensorLinear()
+   local nf = torch.uniform(2,5)
+   local n1 = torch.uniform(10,20)
+   local module = nn.TensorLinear(n1,n1,nf)
+   local input = torch.Tensor(2,n1):zero()
+   local input1 = input[1]
+   local input2 = input[2]
+   
+   local err = jac.testJacobianParameters(module, input, input1, module.gradInput[1])
+   mytester:assertlt(err, precision, 'error on state1 ')
+
+   local err = jac.testJacobianParameters(module, input, input2, module.gradInput[2])
+   mytester:assertlt(err, precision, 'error on state2 ')
+   
+   local err = jac.testJacobianParameters(module, input, module.weight, module.gradWeight)
+   mytester:assertlt(err , precision, 'error on weight ')
+
+   local err = jac.testJacobianParameters(module, input, module.bias, module.gradBias)
+   mytester:assertlt(err , precision, 'error on bias ')
+   
+   --local ferr, berr = jac.testIO(module, input)
+   --mytester:asserteq(0, ferr, torch.typename(module) .. ' - i/o forward err ')
+   --mytester:asserteq(0, berr, torch.typename(module) .. ' - i/o backward err ')
+end
+
+
 mytester:add(nntest)
 
 function kex.module_test()
