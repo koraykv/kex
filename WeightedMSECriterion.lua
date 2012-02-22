@@ -1,7 +1,7 @@
 local WeightedMSECriterion, parent = torch.class('nn.WeightedMSECriterion','nn.MSECriterion')
 
 function WeightedMSECriterion:__init(w)
-   parent:__init(self)
+   parent.__init(self)
    self.weight = w:clone()
    self.buffer = torch.Tensor()
 end
