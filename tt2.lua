@@ -33,14 +33,14 @@ in1 = torch.rand(n1)
 in2 = torch.rand(n2)
 go = torch.rand(no)
 
-m1:updateOutput({in1,in2})
-m2:updateOutput2({in1,in2})
+m1:updateOutput1({in1,in2})
+m2:updateOutput({in1,in2})
 print('fdist ', torch.dist(m1.output,m2.output))
 
 m1:zeroGradParameters()
 m2:zeroGradParameters()
-m1:accGradParameters({in1,in2},go)
-m2:accGradParameters2({in1,in2},go)
+m1:accGradParameters1({in1,in2},go)
+m2:accGradParameters({in1,in2},go)
 print('bdist ', torch.dist(m1.gradBias,m2.gradBias))
 print('wdist ', torch.dist(m1.gradWeight,m2.gradWeight))
 
@@ -48,20 +48,20 @@ print('wdist ', torch.dist(m1.gradWeight,m2.gradWeight))
 t=torch.tic()
 for i=1,10 do
    m1:updateOutput({in1,in2})
-   --m1:zeroGradParameters()
+   m1:zeroGradParameters()
    m1:updateGradInput({in1,in2},go)
    m1:accGradParameters({in1,in2},go)
-   collectgarbage()
+   --collectgarbage()
 end
 print('m1 time ', torch.toc(t))
 
 t=torch.tic()
 for i=1,10 do
    m2:updateOutput2({in1,in2})
-   --m2:zeroGradParameters()
+   m2:zeroGradParameters()
    m2:updateGradInput({in1,in2},go)
    m2:accGradParameters2({in1,in2},go)
-   collectgarbage()
+   --collectgarbage()
 end
 print('m2 time ', torch.toc(t))
 

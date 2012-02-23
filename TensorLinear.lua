@@ -31,7 +31,7 @@ function TensorLinear:reset( stdv )
     --self.weight:uniform(-stdv,stdv)
 end
 
-function TensorLinear:updateOutput( input )
+function TensorLinear:updateOutput1( input )
     local in1,in2 = input[1],input[2]
     local weight = self.weight
     local no = weight:size(1)
@@ -88,7 +88,7 @@ function TensorLinear:updateGradInput(input, gradOutput)
     return self.gradInput
 end
 
-function TensorLinear:accGradParameters( input, gradOutput, scale)
+function TensorLinear:accGradParameters1( input, gradOutput, scale)
     scale = scale or 1
     local in1,in2 = input[1],input[2]
     local no = self.weight:size(1)
@@ -116,3 +116,6 @@ function TensorLinear:accGradParameters2( input, gradOutput, scale)
     gw2:addr(scale,go1,in2)
     self.gradBias:add(scale, gradOutput)
 end
+
+TensorLinear.accGradParameters = TensorLinear.accGradParameters2
+TensorLinear.updateOutput = TensorLinear.updateOutput2
