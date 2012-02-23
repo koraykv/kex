@@ -1,4 +1,25 @@
 require 'kex'
+require 'cunn'
+--torch.setdefaulttensortype('torch.CudaTensor')
+torch.setdefaulttensortype('torch.FloatTensor')
+
+local CudaTensor = torch.CudaTensor
+function CudaTensor:apply(func)
+   local t = self:float()
+   t:apply(func)
+   self:copy(t)
+   return self
+end
+
+function CudaTensor:max(dim)
+   local t = self:float()
+   return t:max(dim)
+end
+CudaTensor.torch = {}
+CudaTensor.torch.uniform = torch.FloatTensor.torch.uniform
+CudaTensor.torch.dist = function(a,b) return a:dist(b) end
+CudaTensor.torch.rand = function(n) return torch.FloatTensor.torch.rand(n):cuda() end
+
 
 n1=784
 n2=784
@@ -27,7 +48,7 @@ print('wdist ', torch.dist(m1.gradWeight,m2.gradWeight))
 t=torch.tic()
 for i=1,10 do
    m1:updateOutput({in1,in2})
-   m1:zeroGradParameters()
+   --m1:zeroGradParameters()
    m1:updateGradInput({in1,in2},go)
    m1:accGradParameters({in1,in2},go)
    collectgarbage()
@@ -37,7 +58,7 @@ print('m1 time ', torch.toc(t))
 t=torch.tic()
 for i=1,10 do
    m2:updateOutput2({in1,in2})
-   m2:zeroGradParameters()
+   --m2:zeroGradParameters()
    m2:updateGradInput({in1,in2},go)
    m2:accGradParameters2({in1,in2},go)
    collectgarbage()
