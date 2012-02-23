@@ -110,7 +110,7 @@ function TensorLinear:accGradParameters2( input, gradOutput, scale)
     local n2 = in2:size(1)
 
     local gw2 = torch.Tensor(self.gradWeight):resize(no*n1,n2)
-    local go1 = torch.Tensor(no,n1)
+    local go1 = torch.Tensor(no,n1):zero()
     go1:addr(gradOutput,in1)
     go1:resize(no*n1)
     gw2:addr(scale,go1,in2)

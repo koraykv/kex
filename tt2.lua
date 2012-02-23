@@ -1,7 +1,7 @@
 require 'kex'
 require 'cunn'
---torch.setdefaulttensortype('torch.CudaTensor')
-torch.setdefaulttensortype('torch.FloatTensor')
+torch.setdefaulttensortype('torch.CudaTensor')
+--torch.setdefaulttensortype('torch.FloatTensor')
 
 local CudaTensor = torch.CudaTensor
 function CudaTensor:apply(func)
