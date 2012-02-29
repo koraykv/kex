@@ -57,7 +57,9 @@ function TensorLinear:updateOutput2( input )
     local n2 = in2:size(1)
 
     local w2 = torch.Tensor(weight):resize(no*n1,n2)
-    local o2 = torch.Tensor(no*n1)
+    self.o2 = self.o2 or torch.Tensor(no*n1)
+    local o2 = self.o2
+    o2:resize(no*n1)
     o2:addmv(0,1,w2,in2)
     o2:resize(no,n1)
     self.output:resize(no)
@@ -79,7 +81,9 @@ function TensorLinear:updateGradInput(input, gradOutput)
     local n2 = in2:size(1)
 
     local w2 = torch.Tensor(weight):resize(no,n1*n2)
-    local gin = torch.Tensor(n1*n2)
+    self.gin = self.gin or torch.Tensor(n1*n2)
+    local gin = self.gin
+    gin:resize(n1*n2)
     gin:addmv(0,1,w2:t(),gradOutput)
     gin:resize(n1,n2)
 
@@ -110,7 +114,9 @@ function TensorLinear:accGradParameters2( input, gradOutput, scale)
     local n2 = in2:size(1)
 
     local gw2 = torch.Tensor(self.gradWeight):resize(no*n1,n2)
-    local go1 = torch.Tensor(no,n1):zero()
+    self.go1 = self.go1 or torch.Tensor(no,n1)
+    local go1 = self.go1
+    go1:zero():resize(no,n1)
     go1:addr(gradOutput,in1)
     go1:resize(no*n1)
     gw2:addr(scale,go1,in2)

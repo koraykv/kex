@@ -19,6 +19,7 @@ SET(luasrc init.lua
   SqrtBias.lua
   stochasticrates.lua
   TensorLinear.lua
+  cudahacks.lua
   test/test.lua
   test/test_module.lua
   )
