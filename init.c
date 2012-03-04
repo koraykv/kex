@@ -5,6 +5,7 @@
 #define torch_string_(NAME) TH_CONCAT_STRING_3(torch., Real, NAME)
 #define nn_(NAME) TH_CONCAT_3(nn_, Real, NAME)
 #define kex_(NAME) TH_CONCAT_3(kex_, Real, NAME)
+#define THOmpTensor_(NAME)   TH_CONCAT_4(THOmp,Real,Tensor_,NAME)
 
 static const void* torch_FloatTensor_id = NULL;
 static const void* torch_DoubleTensor_id = NULL;

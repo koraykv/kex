@@ -19,12 +19,21 @@ SET(luasrc init.lua
   SqrtBias.lua
   stochasticrates.lua
   TensorLinear.lua
+  DivisiveNormalization.lua
   cudahacks.lua
   test/test.lua
   test/test_module.lua
   )
 
+FIND_PACKAGE(OpenMP)
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+
+
+INCLUDE_DIRECTORIES(${Torch_SOURCE_INCLUDES})
+MESSAGE(STATUS "${Torch_SOURCE_INCLUDES}")
+INCLUDE_DIRECTORIES("lib/THOmp")
+
 ADD_TORCH_PACKAGE(kex "${src}"  "${luasrc}" "Extra Tools")
 ADD_TORCH_DOK(dok kex "3rd Party" "Extensions from Koray" 111111.)
 
-TARGET_LINK_LIBRARIES(kex luaT TH)
+TARGET_LINK_LIBRARIES(kex luaT TH THOmp)
