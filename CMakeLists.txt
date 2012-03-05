@@ -8,6 +8,7 @@ SET(luasrc init.lua
   lushio.lua
   CriterionModule.lua
   SpatialFullConvolution.lua 
+  SpatialFullConvolutionMap.lua 
   WeightedMSECriterion.lua
   L1Cost.lua
   Diag.lua
@@ -30,7 +31,6 @@ SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
 
 
 INCLUDE_DIRECTORIES(${Torch_SOURCE_INCLUDES})
-MESSAGE(STATUS "${Torch_SOURCE_INCLUDES}")
 INCLUDE_DIRECTORIES("lib/THOmp")
 
 ADD_TORCH_PACKAGE(kex "${src}"  "${luasrc}" "Extra Tools")
