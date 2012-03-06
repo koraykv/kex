@@ -65,7 +65,7 @@ function DivisiveNormalization:updateOutput(input)
    -- in - mean
    local inzmean = self.subtractor:updateOutput({input,mean})
    -- (in - mean).^2
-   local inzmeansq = self.sqaure:updateOutput(inzmean)
+   local inzmeansq = self.square:updateOutput(inzmean)
    -- sum_j (w_j (in-mean).^2)
    local invar = self.stdestimator:updateOutput(inzmeansq)
    -- sqrt(sum_j (w_j (in-mean).^2))
