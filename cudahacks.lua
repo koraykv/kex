@@ -8,7 +8,11 @@ end
 
 function CudaTensor:max(dim)
    local t = self:float()
-   return t:max(dim)
+   if not dim then
+   	return t:max()
+   else
+   	return t:max(dim)
+   end
 end
 CudaTensor.torch = {}
 CudaTensor.torch.uniform = torch.FloatTensor.torch.uniform

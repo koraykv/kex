@@ -19,6 +19,7 @@ torch.include('kex', 'SqrtBias.lua')
 torch.include('kex', 'stochasticrates.lua')
 torch.include('kex', 'TensorLinear.lua')
 torch.include('kex', 'DivisiveNormalization.lua')
+torch.include('kex', 'hessian.lua')
 
 function kex.cudahacks()
    torch.include('kex','cudahacks.lua')

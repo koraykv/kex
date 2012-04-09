@@ -24,6 +24,7 @@ SET(luasrc init.lua
   cudahacks.lua
   test/test.lua
   test/test_module.lua
+  hessian.lua
   )
 
 FIND_PACKAGE(OpenMP)

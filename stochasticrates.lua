@@ -16,12 +16,12 @@ function kex.nnhacks()
       oldSpatialFullConvolutionUpdateParameters(self, learningRate/(self.nInputPlane))
    end
 
-   -- -- hack SpatialConvolution
-   -- local SpatialConvolution = torch.getmetatable("nn.SpatialConvolution")
-   -- local oldSpatialConvolutionUpdateParameters = SpatialConvolution.updateParameters
-   -- function SpatialConvolution:updateParameters(learningRate)
-   --    oldSpatialConvolutionUpdateParameters(self, learningRate/(self.kW*self.kH*self.nInputPlane))
-   -- end
+   -- hack SpatialConvolution
+   local SpatialConvolution = torch.getmetatable("nn.SpatialConvolution")
+   local oldSpatialConvolutionUpdateParameters = SpatialConvolution.updateParameters
+   function SpatialConvolution:updateParameters(learningRate)
+      oldSpatialConvolutionUpdateParameters(self, learningRate/(self.kW*self.kH*self.nInputPlane))
+   end
 
    -- hack SpatialFullConvolutionMap
    local SpatialFullConvolutionMap = torch.getmetatable("nn.SpatialFullConvolutionMap")
@@ -37,27 +37,25 @@ function kex.nnhacks()
       oldSpatialFullConvolutionMapUpdateParameters(self, learningRate/(self.ninput:max()))
    end
 
-   -- -- hack SpatialConvolutionMap
-   -- local SpatialConvolutionMap = torch.getmetatable("nn.SpatialConvolutionMap")
-   -- local oldSpatialConvolutionMapUpdateParameters = SpatialConvolutionMap.updateParameters
-   -- function SpatialConvolutionMap:updateParameters(learningRate)
-   --    if not self.ninput then
-   --    	 self.ninput = torch.Tensor(self.nOutputPlane):zero()
-   --    	 for i=1,self.connTable:size(1) do
-   --    	    local to = self.connTable[i][2]
-   --    	    self.ninput[to] = self.ninput[to]+1
-   --    	 end
-   --    end
-   --    for i=1,self.nOutputPlane do
-   -- 	 oldSpatialConvolutionMapUpdateParameters(self, learningRate/(self.kW*self.kH*self.ninput[i]))
-   --    end
-   -- end
+   -- hack SpatialConvolutionMap
+   local SpatialConvolutionMap = torch.getmetatable("nn.SpatialConvolutionMap")
+   local oldSpatialConvolutionMapUpdateParameters = SpatialConvolutionMap.updateParameters
+   function SpatialConvolutionMap:updateParameters(learningRate)
+      if not self.ninput then
+      	 self.ninput = torch.Tensor(self.nOutputPlane):zero()
+      	 for i=1,self.connTable:size(1) do
+      	    local to = self.connTable[i][2]
+      	    self.ninput[to] = self.ninput[to]+1
+      	 end
+      end
+      oldSpatialConvolutionMapUpdateParameters(self, learningRate/(self.ninput:max()))
+   end
 
-   -- -- hack SpatialSubSampling
-   -- local SpatialSubSampling = torch.getmetatable("nn.SpatialSubSampling")
-   -- local oldSpatialSubSamplingUpdateParameters = SpatialSubSampling.updateParameters
-   -- function SpatialSubSampling:updateParameters(learningRate)
-   --    oldSpatialSubSamplingUpdateParameters(self, learningRate/(self.kW*self.kH*self.nInputPlane))
-   -- end
+   -- hack SpatialSubSampling
+   local SpatialSubSampling = torch.getmetatable("nn.SpatialSubSampling")
+   local oldSpatialSubSamplingUpdateParameters = SpatialSubSampling.updateParameters
+   function SpatialSubSampling:updateParameters(learningRate)
+      oldSpatialSubSamplingUpdateParameters(self, learningRate/(self.kW*self.kH*self.nInputPlane))
+   end
 
 end
