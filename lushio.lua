@@ -57,6 +57,53 @@ function lushio.read(filename)
    return x
 end
 
+function lushio.write(filename,tensor)
+   -- Writes Lush binary formatted matrix.
+   -- The tensor is stored in 'filename'.
+   --
+   --   call : lushio.write('my_lush_matrix_file_name', tensor);
+   --
+   -- Inputs:
+   --   filename : the name of the lush matrix file. (string)
+   --   tensor   : torch tensor to be stored
+   --
+   --   Koray Kavukcuoglu
+   
+   local fid = torch.DiskFile(filename,'w'):binary()
+   local magic = 0
+   if tensor:type() == 'torch.DoubleTensor' then
+      magic = 507333715
+   elseif tensor:type() == 'torch.FloatTensor' then
+      magic = 507333713
+   elseif tensor:type() == 'torch.IntTensor' then
+      magic = 507333716
+   elseif tensor:type() == 'torch.ByteTensor' then
+      magic = 507333717
+   else
+      error('Can not write ' .. tensor:type())
+   end
+   local ndim = math.max(3,tensor:dim())
+   local tdims = torch.IntStorage(ndim)
+   tdims:fill(1)
+   for i=1,tensor:dim() do tdims[i] = tensor:size(i) end
+
+   fid:writeInt(magic)
+   fid:writeInt(tensor:dim())
+   fid:writeInt(tdims)
+   if magic == 507333717 then      --ubyte matrix
+      fid:writeByte(tensor:storage())
+   elseif magic == 507333716 then      --integer matrix
+      fid:writeInt(tensor:storage())
+   elseif magic == 507333713 then      --float matrix 
+      fid:writeFloat(tensor:storage())
+   elseif magic == 507333715 then      --double matrix
+      fid:writeDouble(tensor:storage())
+   else
+      error('Unknown magic number in tensor.write')
+   end
+   fid:close()
+end
+
 function lushio5.read(filename)
    -- Reads Lush binary formatted matrix and returns it.
    -- The matrix is stored in 'filename'.
