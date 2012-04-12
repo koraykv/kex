@@ -7,5 +7,6 @@ Requirements
 
 Installation
 * Install Torch7 (refer to its own documentation).
-* clone kex into dev directory of Torch7.
+* clone kex into extra directory of Torch7.
+git clone github.com/koraykv/kex.git
 * Rebuild torch, it will include kex too.
