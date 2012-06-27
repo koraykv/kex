@@ -57,7 +57,7 @@ function lushio.read(filename)
    return x
 end
 
-function lushio.write(filename,tensor)
+function lushio.write(filename,tensor_)
    -- Writes Lush binary formatted matrix.
    -- The tensor is stored in 'filename'.
    --
@@ -68,7 +68,7 @@ function lushio.write(filename,tensor)
    --   tensor   : torch tensor to be stored
    --
    --   Koray Kavukcuoglu
-   
+   local tensor = tensor_:clone()
    local fid = torch.DiskFile(filename,'w'):binary()
    local magic = 0
    if tensor:type() == 'torch.DoubleTensor' then
@@ -157,29 +157,39 @@ function lushio5.read(filename)
    return x
 end
 
-function lushexport(filename, m)
+function lushexport(filename, m, export_output)
    if not m then error('Nil machine') end
    local name = torch.typename(m)
    print(name)
+   if export_output and m.output then
+      local of = filename .. '_' .. name .. '_output.mat'
+      if paths.filep(of) then
+	 print('******** this output exists ' .. of)
+      end
+      lushio.write(of,m.output)
+   end
    if name == 'unsup.ConvPSD' then
       lushexport(filename .. '_encoder',m.encoder)
    elseif name == 'nn.SpatialConvolution' then
-      local w = m.weight
-      lushio.write(filename .. '_convolution_kernel.mat' , w:resize(w:size(1)*w:size(2),w:size(3),w:size(4)))
+      local w = m.weight:clone()
+      lushio.write(filename .. '_' .. name .. '_convolution_kernel.mat' , w:resize(w:size(1)*w:size(2),w:size(3),w:size(4)))
       local tt = nn.tables.full(m.nInputPlane,m.nOutputPlane)-1
-      lushio.write(filename .. '_convolution_table.mat' , tt:int())
-      lushio.write(filename .. '_bias_coeff.mat' , m.bias)
+      lushio.write(filename .. '_' .. name .. '_convolution_table.mat' , tt:int())
+      lushio.write(filename .. '_' .. name .. '_bias_coeff.mat' , m.bias)
    elseif name == 'nn.SpatialConvolutionMap' then
-      lushio.write(filename .. '_convolution_kernel.mat' , m.weight)
-      lushio.write(filename .. '_convolution_table.mat' , m.connTable)
-      lushio.write(filename .. '_bias_coeff.mat' , m.bias)
+      lushio.write(filename .. '_' .. name .. '_convolution_kernel.mat' , m.weight)
+      lushio.write(filename .. '_' .. name .. '_convolution_table.mat' , m.connTable)
+      lushio.write(filename .. '_' .. name .. '_bias_coeff.mat' , m.bias)
    elseif name == 'nn.Diag' then
-      lushio.write(filename .. '_diag_coeff.mat' , m.weight)
+      lushio.write(filename .. '_' .. name .. '_diag_coeff.mat' , m.weight)
+   elseif name == 'nn.DivisiveNormalization' then
+      lushio.write(filename .. '_' .. name .. '_kernel.mat', m.kernel)
    elseif name == 'nn.Sequential' then
       for i=1,#m.modules do
-	 lushexport(filename .. '_layer' .. i, m.modules[i])
+	 lushexport(filename .. '_' .. name .. '_layer' .. i, m.modules[i],export_output)
       end
    else
+      os.execute('touch ' .. filename .. '_' .. name .. '_noparam.mat')
       print('skipped ' .. name)
    end
 end
