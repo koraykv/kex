@@ -344,7 +344,10 @@ function nn.Module.getParameters(self)
    -- flatten parameters and gradients
    local flatParameters = flatten(parameters)
    local flatGradParameters = flatten(gradParameters)
-   local flatHessianParameters = flatten(hessianParameters)
+   local flatHessianParameters
+   if hessianParameters[1] then
+      flatHessianParameters = flatten(hessianParameters)
+   end
 
    -- return new flat vector that contains all discrete parameters
    return flatParameters, flatGradParameters, flatHessianParameters
