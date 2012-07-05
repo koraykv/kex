@@ -15,7 +15,7 @@ end
 function Diag:updateOutput(input)
    self.output:resizeAs(input):copy(input)
    for i=1,input:size(1) do
-      self.output:select(1,i):mul(self.weight[i])
+      self.output[{{i}}]:mul(self.weight[i])
    end
    return self.output
 end
@@ -23,13 +23,13 @@ end
 function Diag:updateGradInput(input, gradOutput)
    self.gradInput:resizeAs(gradOutput):copy(gradOutput)
    for i=1,input:size(1) do
-      self.gradInput:select(1,i):mul(self.weight[i])
+      self.gradInput[{{i}}]:mul(self.weight[i])
    end
    return self.gradInput
 end
 
 function Diag:accGradParameters(input, gradOutput)
    for i=1,input:size(1) do
-      self.gradWeight[i] = self.gradWeight[i] + gradOutput:select(1,i):dot(input:select(1,i))
+      self.gradWeight[i] = self.gradWeight[i] + gradOutput[{{i}}]:dot(input[{{i}}])
    end
 end
