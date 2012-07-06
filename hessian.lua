@@ -53,6 +53,13 @@ function nn.TanhShrink.updateDiagHessianInput(self, input, diagHessianOutput)
 end
 
 ----------------------------------------------------------------------
+-- WeightedMSECriterion
+----------------------------------------------------------------------
+function nn.WeightedMSECriterion.updateDiagHessianInput(self,input,target)
+   return nn.MSECriterion.updateDiagHessianInput(self,input,target)
+end
+
+----------------------------------------------------------------------
 -- Diag
 ----------------------------------------------------------------------
 function nn.Diag.updateDiagHessianInput(self, input, diagHessianOutput)
