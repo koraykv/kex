@@ -21,6 +21,7 @@ end
 function nn.SpatialFullConvolution.accDiagHessianParameters(self, input, diagHessianOutput)
    accDiagHessianParameters(self,input, diagHessianOutput, {'gradWeight'}, {'diagHessianWeight'})
 end
+
 function nn.SpatialFullConvolution.initDiagHessianParameters(self)
    initDiagHessianParameters(self,{'gradWeight'},{'diagHessianWeight'})
 end
@@ -36,6 +37,33 @@ end
 function nn.SpatialFullConvolutionMap.accDiagHessianParameters(self, input, diagHessianOutput)
    accDiagHessianParameters(self,input, diagHessianOutput, {'gradWeight'}, {'diagHessianWeight'})
 end
+
 function nn.SpatialFullConvolutionMap.initDiagHessianParameters(self)
+   initDiagHessianParameters(self,{'gradWeight'},{'diagHessianWeight'})
+end
+
+----------------------------------------------------------------------
+-- TanhShrink
+----------------------------------------------------------------------
+function nn.TanhShrink.updateDiagHessianInput(self, input, diagHessianOutput)
+   updateDiagHessianInputPointWise(self.tanh, input, diagHessianOutput)
+   self.diagHessianInput = self.diagHessianInput or input.new():resizeAs(input)
+   torch.add(self.diagHessianInput, self.tanh.diagHessianInput, diagHessianOutput)
+   return self.diagHessianInput
+end
+
+----------------------------------------------------------------------
+-- Diag
+----------------------------------------------------------------------
+function nn.Diag.updateDiagHessianInput(self, input, diagHessianOutput)
+   updateDiagHessianInput(self, input, diagHessianOutput, {'weight'}, {'weightSq'})
+   return self.diagHessianInput
+end
+
+function nn.Diag.accDiagHessianParameters(self, input, diagHessianOutput)
+   accDiagHessianParameters(self,input, diagHessianOutput, {'gradWeight'}, {'diagHessianWeight'})
+end
+
+function nn.Diag.initDiagHessianParameters(self)
    initDiagHessianParameters(self,{'gradWeight'},{'diagHessianWeight'})
 end
