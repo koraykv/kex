@@ -3,7 +3,7 @@
 -- to estimate diagonal elements of the Hessian. This is useful
 -- to condition learning rates individually.
 ----------------------------------------------------------------------
-nn.hessian.activate() -- activate Hessian usage
+nn.hessian.enable() -- enable Hessian usage
 
 local accDiagHessianParameters = nn.hessian.accDiagHessianParameters
 local updateDiagHessianInput = nn.hessian.updateDiagHessianInput
