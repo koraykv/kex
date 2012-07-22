@@ -14,16 +14,24 @@ end
 
 function Diag:updateOutput(input)
    self.output:resizeAs(input):copy(input)
-   for i=1,input:size(1) do
-      self.output[{{i}}]:mul(self.weight[i])
+   if input:dim() > 1 then
+      for i=1,input:size(1) do
+	 self.output[{{i}}]:mul(self.weight[i])
+      end
+   else
+      self.output:cmul(self.weight)
    end
    return self.output
 end
 
 function Diag:updateGradInput(input, gradOutput)
    self.gradInput:resizeAs(gradOutput):copy(gradOutput)
-   for i=1,input:size(1) do
-      self.gradInput[{{i}}]:mul(self.weight[i])
+   if input:dim() > 1 then
+      for i=1,input:size(1) do
+	 self.gradInput[{{i}}]:mul(self.weight[i])
+      end
+   else
+      self.gradInput:cmul(self.weight)
    end
    return self.gradInput
 end

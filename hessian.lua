@@ -60,6 +60,17 @@ function nn.WeightedMSECriterion.updateDiagHessianInput(self,input,target)
 end
 
 ----------------------------------------------------------------------
+-- L1Cost
+----------------------------------------------------------------------
+function nn.L1Cost.updateDiagHessianInput(self,input)
+   self.diagHessianInput = self.diagHessianInput or input.new()
+   self.diagHessianInput:resizeAs(input)
+   self.diagHessianInput:fill(1)
+   self.diagHessianInput[torch.eq(input,0)] = 0
+   return self.diagHessianInput
+end
+
+----------------------------------------------------------------------
 -- Diag
 ----------------------------------------------------------------------
 function nn.Diag.updateDiagHessianInput(self, input, diagHessianOutput)
