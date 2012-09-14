@@ -5,7 +5,7 @@
 static int kex_(shrinkage)(lua_State *L)
 {
   real lambda = luaL_checknumber(L,2);
-  THTensor *tensor = luaT_checkudata(L,1, torch_(Tensor_id));
+  THTensor *tensor = luaT_checkudata(L,1, torch_Tensor);
   luaL_argcheck(L, lambda >=0, 2, "Lambda should be non-negative");
 
   if (lambda == 0) return 1;
@@ -30,14 +30,14 @@ static int kex_(sign)(lua_State *L)
 {
   int narg = lua_gettop(L);
   THTensor *tensor = NULL;
-  THTensor *r = luaT_checkudata(L,1,torch_(Tensor_id));
+  THTensor *r = luaT_checkudata(L,1,torch_Tensor);
   if (narg == 1)
   {
     tensor = r;
   }
   else if (narg == 2)
   {
-    tensor = luaT_checkudata(L,2,torch_(Tensor_id));
+    tensor = luaT_checkudata(L,2,torch_Tensor);
   }
   else
   {
@@ -61,7 +61,7 @@ static const struct luaL_Reg kex_(util__) [] = {
 
 static void kex_(util_init)(lua_State *L)
 {
-  luaT_pushmetaclass(L, torch_(Tensor_id));
+  luaT_pushmetatable(L, torch_Tensor);
   luaL_register(L, NULL, kex_(util__));
   lua_pop(L,1);
 }

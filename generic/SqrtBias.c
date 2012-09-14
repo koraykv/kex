@@ -4,9 +4,9 @@
 
 static int nn_(SqrtBias_updateOutput)(lua_State *L)
 {
-  THTensor *input = luaT_checkudata(L, 2, torch_(Tensor_id));
+  THTensor *input = luaT_checkudata(L, 2, torch_Tensor);
   real bias = luaT_getfieldchecknumber(L,1,"bias");
-  THTensor *output = luaT_getfieldcheckudata(L, 1, "output", torch_(Tensor_id));
+  THTensor *output = luaT_getfieldcheckudata(L, 1, "output", torch_Tensor);
 
   THTensor_(resizeAs)(output, input);
 
@@ -18,10 +18,10 @@ static int nn_(SqrtBias_updateOutput)(lua_State *L)
 
 static int nn_(SqrtBias_updateGradInput)(lua_State *L)
 {
-  THTensor *input = luaT_checkudata(L, 2, torch_(Tensor_id));
-  THTensor *gradOutput = luaT_checkudata(L, 3, torch_(Tensor_id));
-  THTensor *output = luaT_getfieldcheckudata(L, 1, "output", torch_(Tensor_id));
-  THTensor *gradInput = luaT_getfieldcheckudata(L, 1, "gradInput", torch_(Tensor_id));
+  THTensor *input = luaT_checkudata(L, 2, torch_Tensor);
+  THTensor *gradOutput = luaT_checkudata(L, 3, torch_Tensor);
+  THTensor *output = luaT_getfieldcheckudata(L, 1, "output", torch_Tensor);
+  THTensor *gradInput = luaT_getfieldcheckudata(L, 1, "gradInput", torch_Tensor);
 
   THTensor_(resizeAs)(gradInput, input);
 
@@ -39,7 +39,7 @@ static const struct luaL_Reg nn_(SqrtBias__) [] = {
 
 static void nn_(SqrtBias_init)(lua_State *L)
 {
-  luaT_pushmetaclass(L, torch_(Tensor_id));
+  luaT_pushmetatable(L, torch_Tensor);
   luaT_registeratname(L, nn_(SqrtBias__), "nn");
   lua_pop(L,1);
 }

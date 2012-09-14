@@ -27,13 +27,12 @@ SET(luasrc init.lua
   hessian.lua
   )
 
-FIND_PACKAGE(OpenMP)
-SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-
+IF (WITH_OPENMP)
+  FIND_PACKAGE(OpenMP)
+  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+ENDIF(WITH_OPENMP)
 
 INCLUDE_DIRECTORIES(${Torch_SOURCE_INCLUDES})
-INCLUDE_DIRECTORIES("lib/THOmp")
-
 ADD_TORCH_PACKAGE(kex "${src}"  "${luasrc}" "Extra Tools")
 ADD_TORCH_DOK(dok kex "3rd Party" "Extensions from Koray" 111111.)
 
