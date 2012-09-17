@@ -26,7 +26,7 @@ function DivisiveNormalization:__init(nInputPlane, kernel)
    -- normalize kernel
    self.kernel:div(self.kernel:sum() * self.nInputPlane)
    local padH = math.floor(self.kernel:size(1)/2)
-   local padW = padH
+   local padW = math.floor(self.kernel:size(2)/2)
 
    -- MEAN
    self.meanestimator = nn.Sequential()
